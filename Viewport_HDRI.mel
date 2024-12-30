@@ -6,6 +6,7 @@ if (`objExists Viewport_HDRI_geo`){
     polySphere -r 1000 -sx 50 -sy 50 -ax 0 1 0 -cuv 2 -ch 1 -n "Viewport_HDRI_geo";
     setPolygonDisplaySettings("culling");
     performPolyNormal 0 -1 0;
+    doHideInOutliner 1;
     createDisplayLayer -n "Viewport HDRI";
     layerEditorLayerButtonTypeChange Viewport_HDRI;
     layerEditorLayerButtonTypeChange Viewport_HDRI;
