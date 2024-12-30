@@ -1,0 +1,43 @@
+source "AEfileTemplate";
+if (`objExists Viewport_HDRI_geo`){
+    AEfileTextureBrowser "AEassignTextureCB  HDRI_f.fileTextureName" "HDRI_f" image;  
+} else {
+    modelEditor -e -displayTextures true modelPanel4;
+    polySphere -r 1000 -sx 50 -sy 50 -ax 0 1 0 -cuv 2 -ch 1 -n "Viewport_HDRI_geo";
+    setPolygonDisplaySettings("culling");
+    performPolyNormal 0 -1 0;
+    createDisplayLayer -n "Viewport HDRI";
+    layerEditorLayerButtonTypeChange Viewport_HDRI;
+    layerEditorLayerButtonTypeChange Viewport_HDRI;
+    shadingNode -asShader standardSurface -n "Viewport_HDRI_mat";
+    sets -r true -noSurfaceShader true -em -n Viewport_HDRI_matSG;
+    connectAttr Viewport_HDRI_mat.outColor Viewport_HDRI_matSG.surfaceShader;
+    hyperShade -a "Viewport_HDRI_mat" -geo "Viewport_HDRI_geo";
+    setAttr "Viewport_HDRI_mat.base" 0;
+    setAttr "Viewport_HDRI_mat.specular" 0;
+    setAttr "Viewport_HDRI_mat.emission" 1;
+    shadingNode -asTexture -isColorManaged file -n "HDRI_f";
+    shadingNode -asUtility place2dTexture -n "HDRI_p";
+    connectAttr HDRI_p.coverage HDRI_f.coverage;
+    connectAttr HDRI_p.translateFrame HDRI_f.translateFrame;
+    connectAttr HDRI_p.rotateFrame HDRI_f.rotateFrame;
+    connectAttr HDRI_p.mirrorU HDRI_f.mirrorU;
+    connectAttr HDRI_p.mirrorV HDRI_f.mirrorV;
+    connectAttr HDRI_p.stagger HDRI_f.stagger;
+    connectAttr HDRI_p.wrapU HDRI_f.wrapU;
+    connectAttr HDRI_p.wrapV HDRI_f.wrapV;
+    connectAttr HDRI_p.repeatUV HDRI_f.repeatUV;
+    connectAttr HDRI_p.offset HDRI_f.offset;
+    connectAttr HDRI_p.rotateUV HDRI_f.rotateUV;
+    connectAttr HDRI_p.noiseUV HDRI_f.noiseUV;
+    connectAttr HDRI_p.vertexUvOne HDRI_f.vertexUvOne;
+    connectAttr HDRI_p.vertexUvTwo HDRI_f.vertexUvTwo;
+    connectAttr HDRI_p.vertexUvThree HDRI_f.vertexUvThree;
+    connectAttr HDRI_p.vertexCameraOne HDRI_f.vertexCameraOne;
+    connectAttr HDRI_p.outUV HDRI_f.uv;
+    connectAttr HDRI_p.outUvFilterSize HDRI_f.uvFilterSize;
+    connectAttr -force HDRI_f.outColor Viewport_HDRI_mat.emissionColor;
+	select "HDRI_f";
+    AEfileTextureBrowser "AEassignTextureCB  HDRI_f.fileTextureName" "HDRI_f" image;
+	SelectNone;
+}
